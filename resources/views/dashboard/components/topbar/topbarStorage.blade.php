@@ -9,19 +9,19 @@
             <div class="row g-0">
                 <div class="col">
                     <a class="dropdown-icon-item" href="#">
-                        <img src="admin/images/brands/slack.png" alt="slack">
+                        <img src="{{ asset('admin/images/brands/slack.png') }}" alt="slack">
                         <span>Slack</span>
                     </a>
                 </div>
                 <div class="col">
                     <a class="dropdown-icon-item" href="#">
-                        <img src="admin/images/brands/github.png" alt="Github">
+                        <img src="{{ asset('admin/images/brands/github.png') }}" alt="Github">
                         <span>GitHub</span>
                     </a>
                 </div>
                 <div class="col">
                     <a class="dropdown-icon-item" href="#">
-                        <img src="admin/images/brands/dribbble.png" alt="dribbble">
+                        <img src="{{ asset('admin/images/brands/dribbble.png') }}" alt="dribbble">
                         <span>Dribbble</span>
                     </a>
                 </div>
@@ -30,19 +30,19 @@
             <div class="row g-0">
                 <div class="col">
                     <a class="dropdown-icon-item" href="#">
-                        <img src="admin/images/brands/bitbucket.png" alt="bitbucket">
+                        <img src="{{ asset('admin/images/brands/bitbucket.png') }}" alt="bitbucket">
                         <span>Bitbucket</span>
                     </a>
                 </div>
                 <div class="col">
                     <a class="dropdown-icon-item" href="#">
-                        <img src="admin/images/brands/dropbox.png" alt="dropbox">
+                        <img src="{{ asset('admin/images/brands/dropbox.png') }}" alt="dropbox">
                         <span>Dropbox</span>
                     </a>
                 </div>
                 <div class="col">
                     <a class="dropdown-icon-item" href="#">
-                        <img src="admin/images/brands/g-suite.png" alt="G Suite">
+                        <img src="{{ asset('admin/images/brands/g-suite.png') }}" alt="G Suite">
                         <span>G Suite</span>
                     </a>
                 </div>
