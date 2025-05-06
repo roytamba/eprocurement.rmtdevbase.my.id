@@ -32,6 +32,9 @@
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@iconscout/unicons@4.2.0/css/line.min.css" rel="stylesheet">
 
+    {{-- Custom --}}
+    @yield('custom-styles')
+
 </head>
 
 <body>
@@ -104,6 +107,7 @@
 
     <!-- App js -->
     <script src="{{ asset('admin/js/app.min.js') }}"></script>
+    @yield('custom-scripts')
 
 </body>
 

@@ -4,20 +4,29 @@
             <div class="page-title-right">
                 <form class="d-flex">
                     <div class="input-group">
-                        <input type="text" class="form-control form-control-light" id="dash-daterange">
+                        <input type="text" class="form-control form-control-light" id="dash-daterange" disabled>
                         <span class="input-group-text bg-primary border-primary text-white">
                             <i class="mdi mdi-calendar-range font-13"></i>
                         </span>
                     </div>
-                    <a href="javascript: void(0);" class="btn btn-primary ms-2">
-                        <i class="mdi mdi-autorenew"></i>
-                    </a>
-                    <a href="javascript: void(0);" class="btn btn-primary ms-1">
-                        <i class="mdi mdi-filter-variant"></i>
-                    </a>
                 </form>
             </div>
-            <h4 class="page-title">Dashboard</h4>
+
+            {{-- Breadcrumb --}}
+            <h4 class="page-title">
+                {{ end($breadcrumbs)['label'] ?? 'Dashboard' }}
+            </h4>
+            <ol class="breadcrumb m-0">
+                @foreach ($breadcrumbs as $item)
+                    @if ($loop->last)
+                        <li class="breadcrumb-item active">{{ $item['label'] }}</li>
+                    @else
+                        <li class="breadcrumb-item">
+                            <a href="{{ $item['url'] }}">{{ $item['label'] }}</a>
+                        </li>
+                    @endif
+                @endforeach
+            </ol>
         </div>
     </div>
 </div>
