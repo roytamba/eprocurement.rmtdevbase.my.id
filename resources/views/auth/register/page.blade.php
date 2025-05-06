@@ -65,19 +65,6 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-3">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="checkbox-signup" name="terms"
-                                            {{ old('terms') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="checkbox-signup">
-                                            I accept <a href="#" class="text-muted">{{ __('Terms and Conditions') }}</a>
-                                        </label>
-                                    </div>
-                                    @error('terms')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-
                                 <div class="mb-3 text-center">
                                     <button class="btn btn-primary" type="submit">{{ __('Sign Up') }}</button>
                                 </div>
