@@ -48,14 +48,13 @@
                             </select>
                         </div>
                         <div class="col-md-12 mb-3">
+                            <label for="entity-address" class="form-label">Address</label>
+                            <textarea class="form-control" id="entity-address" name="address" rows="2" placeholder="Enter Address"></textarea>
+                        </div>
+                        <div class="col-md-12 mb-3">
                             <label for="entity-description" class="form-label">Description</label>
                             <textarea class="form-control" id="entity-description" name="description" rows="2"
                                 placeholder="Enter description"></textarea>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <label for="entity-address" class="form-label">Address</label>
-                            <textarea class="form-control" id="entity-address" name="address" rows="2"
-                                placeholder="Enter Address"></textarea>
                         </div>
                     </div>
                     <div class="row">

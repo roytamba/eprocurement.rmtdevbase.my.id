@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="edit-code" class="form-label">Entity Code</label>
-                            <input type="text" class="form-control" name="code" id="edit-code" required>
+                            <input type="text" class="form-control" name="code" id="edit-code" required readonly>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="edit-name" class="form-label">Entity Name</label>
