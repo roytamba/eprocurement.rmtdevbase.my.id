@@ -1,14 +1,17 @@
 @extends('layouts.dashboard')
 @section('custom-styles')
-    <link href="{{ asset('admin/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('admin/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet"
+    <link href="{{ asset('admin/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('admin/vendor/datatables.net-fixedcolumns-bs5/css/fixedColumns.bootstrap5.min.css') }}" rel="stylesheet"
+    <link href="{{ asset('admin/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
+        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('admin/vendor/datatables.net-fixedcolumns-bs5/css/fixedColumns.bootstrap5.min.css') }}"
+        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('admin/vendor/datatables.net-fixedheader-bs5/css/fixedHeader.bootstrap5.min.css') }}"
+        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('admin/vendor/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('admin/vendor/datatables.net-fixedheader-bs5/css/fixedHeader.bootstrap5.min.css') }}" rel="stylesheet"
+    <link href="{{ asset('admin/vendor/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('admin/vendor/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('admin/vendor/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     <div class="row">
@@ -51,25 +54,46 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
+                                    <table id="datatable-buttons" class="table table-striped dt-responsive w-100">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
                                                 <th>Code</th>
                                                 <th>Name</th>
-                                                <th>Description</th>
                                                 <th>Email</th>
                                                 <th>Phone</th>
                                                 <th>Fax</th>
                                                 <th>Address</th>
+                                                <th>Description</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
 
 
                                         <tbody>
-                                            {{-- <tr>
-                                                
-                                            </tr> --}}
+                                            @forelse($entities as $i => $entity)
+                                                <tr class="clickable-row" data-bs-toggle="modal" style="cursor: pointer"
+                                                    data-bs-target="#entity-edit-modal" data-id="{{ $entity->id }}"
+                                                    data-code="{{ $entity->code }}" data-name="{{ $entity->name }}"
+                                                    data-email="{{ $entity->email }}" data-phone="{{ $entity->phone }}"
+                                                    data-fax="{{ $entity->fax }}" data-address="{{ $entity->address }}"
+                                                    data-description="{{ $entity->description }}"
+                                                    data-status="{{ $entity->status }}">
+                                                    <td>{{ $i + 1 }}</td>
+                                                    <td>{{ $entity->code }}</td>
+                                                    <td>{{ $entity->name }}</td>
+                                                    <td>{{ $entity->email ?? '-' }}</td>
+                                                    <td>{{ $entity->phone ?? '-' }}</td>
+                                                    <td>{{ $entity->fax ?? '-' }}</td>
+                                                    <td>{{ $entity->address ?? '-' }}</td>
+                                                    <td>{{ $entity->description ?? '-' }}</td>
+                                                    <td>{{ $entity->status }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="9" class="text-center">Belum ada data entity</td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>
@@ -78,8 +102,8 @@
                         </div> <!-- end preview-->
 
                         {{-- <div class="tab-pane create" id="buttons-table-create">
-                            
-                        </div>  --}}
+
+                        </div> --}}
                         <!-- end preview code-->
                     </div> <!-- end tab-content-->
 
@@ -91,6 +115,7 @@
     <!-- Modals -->
     @include('entity.components.addModal')
     @include('entity.components.importModal')
+    @include('entity.components.editModal')
 
 
     <!-- end modal-->
@@ -113,4 +138,46 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="{{ asset('admin/js/pages/demo.datatable-init.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses!',
+                text: '{{ session('success') }}',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}'
+            });
+        @endif
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.clickable-row').on('click', function () {
+                // fill form data
+                $('#edit-entity-id').val($(this).data('id'));
+                $('#edit-code').val($(this).data('code'));
+                $('#edit-name').val($(this).data('name'));
+                $('#edit-email').val($(this).data('email'));
+                $('#edit-phone').val($(this).data('phone'));
+                $('#edit-fax').val($(this).data('fax'));
+                $('#edit-address').val($(this).data('address'));
+                $('#edit-description').val($(this).data('description'));
+
+                // change status
+                const status = $(this).data('status');
+                $("#edit-status option").prop("selected", false);
+                $("#edit-status option[value='" + status + "']").prop("selected", true);
+
+            });
+        });
+    </script>
+
 @endsection
