@@ -2,8 +2,8 @@
 @section('custom-styles')
     <link href="{{ asset('admin/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('admin/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
-        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('admin/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet"
+        type="text/css" />
     <link href="{{ asset('admin/vendor/datatables.net-fixedcolumns-bs5/css/fixedColumns.bootstrap5.min.css') }}"
         rel="stylesheet" type="text/css" />
     <link href="{{ asset('admin/vendor/datatables.net-fixedheader-bs5/css/fixedHeader.bootstrap5.min.css') }}"
@@ -72,13 +72,20 @@
 
                                         <tbody>
                                             @forelse($entities as $i => $entity)
-                                                <tr class="clickable-row" data-bs-toggle="modal" style="cursor: pointer"
-                                                    data-bs-target="#entity-edit-modal" data-id="{{ $entity->id }}"
-                                                    data-code="{{ $entity->code }}" data-name="{{ $entity->name }}"
-                                                    data-email="{{ $entity->email }}" data-phone="{{ $entity->phone }}"
-                                                    data-fax="{{ $entity->fax }}" data-address="{{ $entity->address }}"
-                                                    data-description="{{ $entity->description }}"
-                                                    data-status="{{ $entity->status }}">
+                                                <tr class="clickable-row" style="cursor: pointer" data-bs-toggle="modal"
+                                                    data-bs-target="#entity-edit-modal"
+                                                    onclick="onEntityRowClick({ 
+                                                id: '{{ $entity->id }}', 
+                                                code: '{{ $entity->code }}', 
+                                                name: '{{ $entity->name }}', 
+                                                email: '{{ $entity->email }}', 
+                                                phone: '{{ $entity->phone }}', 
+                                                fax: '{{ $entity->fax }}', 
+                                                address: '{{ $entity->address }}', 
+                                                description: `{{ $entity->description }}`, 
+                                                status: '{{ $entity->status }}' 
+                                            })">
+
                                                     <td>{{ $i + 1 }}</td>
                                                     <td>{{ $entity->code }}</td>
                                                     <td>{{ $entity->name }}</td>
@@ -159,25 +166,19 @@
         @endif
     </script>
     <script>
-        $(document).ready(function () {
-            $('.clickable-row').on('click', function () {
-                // fill form data
-                $('#edit-entity-id').val($(this).data('id'));
-                $('#edit-code').val($(this).data('code'));
-                $('#edit-name').val($(this).data('name'));
-                $('#edit-email').val($(this).data('email'));
-                $('#edit-phone').val($(this).data('phone'));
-                $('#edit-fax').val($(this).data('fax'));
-                $('#edit-address').val($(this).data('address'));
-                $('#edit-description').val($(this).data('description'));
+        function onEntityRowClick(entity) {
+            $('#edit-entity-id').val(entity.id);
+            $('#edit-code').val(entity.code);
+            $('#edit-name').val(entity.name);
+            $('#edit-email').val(entity.email);
+            $('#edit-phone').val(entity.phone);
+            $('#edit-fax').val(entity.fax);
+            $('#edit-address').val(entity.address);
+            $('#edit-description').val(entity.description);
 
-                // change status
-                const status = $(this).data('status');
-                $("#edit-status option").prop("selected", false);
-                $("#edit-status option[value='" + status + "']").prop("selected", true);
-
-            });
-        });
+            // Set status
+            $('#edit-status option').prop('selected', false);
+            $('#edit-status option[value="' + entity.status + '"]').prop('selected', true);
+        }
     </script>
-
 @endsection

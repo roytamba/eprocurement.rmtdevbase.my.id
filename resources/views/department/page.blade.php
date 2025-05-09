@@ -74,15 +74,20 @@
                                         <tbody>
                                             @forelse($departments as $i => $department)
                                                 <tr class="clickable-row" data-bs-toggle="modal" style="cursor: pointer"
-                                                    data-bs-target="#department-edit-modal" data-id="{{ $department->id }}"
-                                                    data-entity-id="{{ $department->entity_id }}"
-                                                    data-code="{{ $department->code }}" data-name="{{ $department->name }}"
-                                                    data-email="{{ $department->email }}"
-                                                    data-phone="{{ $department->phone }}"
-                                                    data-fax="{{ $department->fax }}"
-                                                    data-address="{{ $department->address }}"
-                                                    data-description="{{ $department->description }}"
-                                                    data-status="{{ $department->status }}">
+                                                    data-bs-target="#department-edit-modal"
+                                                    onclick="onDepartmentRowClick({ 
+                                                        id: '{{ $department->id }}',
+                                                        entity_id: '{{ $department->entity_id }}',
+                                                        code: '{{ $department->code }}',
+                                                        name: '{{ $department->name }}',
+                                                        email: '{{ $department->email }}',
+                                                        phone: '{{ $department->phone }}',
+                                                        fax: '{{ $department->fax }}',
+                                                        address: '{{ $department->address }}',
+                                                        description: `{{ $department->description }}`,
+                                                        status: '{{ $department->status }}'
+                                                        })">
+
                                                     <td>{{ $i + 1 }}</td>
                                                     <td>{{ $department->code }}</td>
                                                     <td>{{ $department->name }}</td>
@@ -119,8 +124,8 @@
 
     <!-- Modals -->
     @include('department.components.addModal')
-    @include('department.components.importModal')
     @include('department.components.editModal')
+    @include('department.components.importModal')
 
 
     <!-- end modal-->
@@ -164,30 +169,22 @@
         @endif
     </script>
     <script>
-        $(document).ready(function() {
-            $('.clickable-row').on('click', function() {
-                // fill form data
-                $('#edit-department-id').val($(this).data('id'));
+        function onDepartmentRowClick(department) {
+            // Set entity
+            $('#edit-entity-id option').prop('selected', false);
+            $('#edit-entity-id option[value="' + department.entity_id + '"]').prop('selected', true);
 
-                // change entity
-                const entity_id = $(this).data('entity_id');
-                $("#edit-entity-id option").prop("selected", false);
-                $("#edit-entity-id option[value='" + entity_id + "']").prop("selected", true);
+            $('#edit-department-code').val(department.code);
+            $('#edit-department-name').val(department.name);
+            $('#edit-department-email').val(department.email);
+            $('#edit-department-phone').val(department.phone);
+            $('#edit-department-fax').val(department.fax);
+            $('#edit-department-address').val(department.address);
+            $('#edit-department-description').val(department.description);
 
-                $('#edit-department-code').val($(this).data('code'));
-                $('#edit-department-name').val($(this).data('name'));
-                $('#edit-department-email').val($(this).data('email'));
-                $('#edit-department-phone').val($(this).data('phone'));
-                $('#edit-department-fax').val($(this).data('fax'));
-                $('#edit-department-address').val($(this).data('address'));
-                $('#edit-department-description').val($(this).data('description'));
-
-                // change status
-                const status = $(this).data('status');
-                $("#edit-department-status option").prop("selected", false);
-                $("#edit-department-status option[value='" + status + "']").prop("selected", true);
-
-            });
-        });
+            // Set status
+            $('#edit-department-status option').prop('selected', false);
+            $('#edit-department-status option[value="' + department.status + '"]').prop('selected', true);
+        }
     </script>
 @endsection
