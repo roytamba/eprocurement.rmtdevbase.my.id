@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Entity;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,9 @@ class DashboardController extends Controller
     public function departmentPage()
     {
         $breadcrumbs = $this->generateBreadcrumb();
-        return view('department.page', compact('breadcrumbs'));
+        $departments = Department::all();
+        $entities = Entity::all();
+        return view('department.page', compact('breadcrumbs', 'departments', 'entities'));
     }
 
     protected function generateBreadcrumb()

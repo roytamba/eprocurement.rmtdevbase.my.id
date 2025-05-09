@@ -37,7 +37,7 @@ class EntityController extends Controller
 
         try {
             $entity = Entity::findOrFail($request->id);
-            $entity->update($request->only('code', 'name', 'email', 'phone', 'fax', 'address', 'description'));
+            $entity->update($request->only('code', 'name', 'email', 'phone', 'fax', 'address', 'description', 'status'));
             return redirect()->back()->with('success', 'Entity updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to update entity. Please try again.');

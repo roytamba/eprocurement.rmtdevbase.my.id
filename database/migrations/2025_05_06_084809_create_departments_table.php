@@ -16,8 +16,12 @@ return new class extends Migration
             $table->unsignedBigInteger('entity_id');
             $table->string('code')->unique();
             $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('fax')->nullable();
+            $table->text('address')->nullable();
             $table->text('description')->nullable();
-            $table->string('status')->default('active');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }
