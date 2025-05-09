@@ -1,7 +1,7 @@
 <div class="modal fade" id="entity-edit-modal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="" method="POST" id="form-edit-entity">
+            <form action="{{ route('entities.update') }}" method="POST" id="form-edit-entity">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="id" id="edit-entity-id">
