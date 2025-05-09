@@ -9,7 +9,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::get('/dashboard', [DashboardController::class, 'dashboardPage'])->name('dashboard');
     Route::get('/entity', [DashboardController::class, 'entityPage'])->name('entity');
-    Route::post('/entity', [EntityController::class, 'store'])->name('entities.store');
+    Route::post('/entity', [EntityController::class, 'store'])->name('entity.store');
+    Route::put('/entity', [EntityController::class, 'update'])->name('entity.update');
     Route::get('/department', [DashboardController::class, 'departmentPage'])->name('department');
 
     // Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Ubah method ke POST dan tambahkan action -->
-            <form method="POST" action="{{ route('entities.store') }}" class="needs-validation" id="form-entity"
+            <form method="POST" action="{{ route('entity.store') }}" class="needs-validation" id="form-entity"
                 novalidate>
                 @csrf
                 <div class="modal-header py-3 px-4 border-bottom-0">
