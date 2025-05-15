@@ -4,20 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Entity extends Model
+class Branch extends Model
 {
-    protected $table = "entities";
+    protected $table = "branches";
     protected $fillable = [
+        'entity_id',
+        'branch_type_id',
         'code',
         'name',
-        'business_type_id',
-        'industry_type_id',
-        'description',
         'email',
         'phone',
         'fax',
-        'website',
+        'postal_code',
         'address',
-        'status'
+        'description',
+        'status',
     ];
 }

@@ -1,9 +1,7 @@
 <div class="modal fade" id="entity-add-modal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <!-- Ubah method ke POST dan tambahkan action -->
-            <form method="POST" action="{{ route('entity.store') }}" class="needs-validation" id="form-entity"
-                novalidate>
+            <form method="POST" action="{{ route('entity.store') }}" class="needs-validation" id="form-entity" novalidate>
                 @csrf
                 <div class="modal-header py-3 px-4 border-bottom-0">
                     <h5 class="modal-title">Add New Entity</h5>
@@ -11,18 +9,40 @@
                 </div>
                 <div class="modal-body px-4 pb-4 pt-0">
                     <div class="row">
-                        <!-- Semua field tetap sama -->
                         <div class="col-md-6 mb-3">
                             <label for="entity-code" class="form-label">Entity Code</label>
                             <input type="text" class="form-control" id="entity-code" name="code"
                                 placeholder="Enter Code" required>
                             <div class="invalid-feedback">Please enter a valid entity code</div>
                         </div>
+
                         <div class="col-md-6 mb-3">
                             <label for="entity-name" class="form-label">Entity Name</label>
                             <input type="text" class="form-control" id="entity-name" name="name"
                                 placeholder="Enter Name" required>
                             <div class="invalid-feedback">Please enter a valid entity name</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="entity-business-type" class="form-label">Business Type</label>
+                            <select name="business_type_id" id="entity-business-type" class="form-control" required>
+                                <option value="" disabled selected>Select Business Type</option>
+                                @foreach ($businessTypes as $type)
+                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">Please select a business type</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="entity-industry-type" class="form-label">Industry Type</label>
+                            <select name="industry_type_id" id="entity-industry-type" class="form-control" required>
+                                <option value="" disabled selected>Select Industry Type</option>
+                                @foreach ($industryTypes as $industry)
+                                    <option value="{{ $industry->id }}">{{ $industry->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">Please select an industry type</div>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -41,11 +61,20 @@
                                 placeholder="Enter Fax Number">
                         </div>
                         <div class="col-md-6 mb-3">
+                            <label for="entity-website" class="form-label">Website</label>
+                            <input type="text" class="form-control" id="entity-website" name="website"
+                                placeholder="Enter Website">
+                        </div>
+                        <div class="col-md-6 mb-3">
                             <label for="edit-status" class="form-label">Status</label>
                             <select name="status" id="edit-status" class="form-control">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
                             </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="entity-tax" class="form-label">Tax</label>
+                            <input type="text" class="form-control" name="tax_id" id="entity-tax">
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="entity-address" class="form-label">Address</label>

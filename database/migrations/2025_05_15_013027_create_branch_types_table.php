@@ -11,17 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('branch_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('entity_id');
-            $table->unsignedBigInteger('branch_id');
             $table->string('code')->unique();
             $table->string('name');
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('fax')->nullable();
-            $table->string('postal_code')->nullable();
-            $table->text('address')->nullable();
             $table->text('description')->nullable();
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamps();
@@ -33,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('branch_types');
     }
 };

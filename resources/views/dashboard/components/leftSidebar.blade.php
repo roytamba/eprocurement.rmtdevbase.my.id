@@ -68,6 +68,9 @@
                             <a href="/entity">Entity</a>
                         </li>
                         <li>
+                            <a href="/branch">Branch</a>
+                        </li>
+                        <li>
                             <a href="/department">Department</a>
                         </li>
                     </ul>

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
+use App\Models\BranchType;
+use App\Models\BusinessType;
 use App\Models\Department;
 use App\Models\Entity;
+use App\Models\IndustryType;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -18,7 +22,32 @@ class DashboardController extends Controller
     {
         $breadcrumbs = $this->generateBreadcrumb();
         $entities = Entity::all();
-        return view('entity.page', compact('breadcrumbs', 'entities'));
+        $businessTypes = BusinessType::all();
+        $industryTypes = IndustryType::all();
+
+        // Menggunakan map untuk menambahkan properti baru ke setiap entity
+        $entities = Entity::all()->map(function ($entity) use ($businessTypes, $industryTypes) {
+            // Mencari business_type_name berdasarkan business_type_id
+            $businessType = $businessTypes->where('id', $entity->business_type_id)->first();
+            $entity->business_type_name = $businessType ? $businessType->name : null;
+
+            // Mencari industry_type_name berdasarkan industry_type_id
+            $industryType = $industryTypes->where('id', $entity->industry_type_id)->first();
+            $entity->industry_type_name = $industryType ? $industryType->name : null;
+
+            return $entity;
+        });
+
+        return view('entity.page', compact('breadcrumbs', 'entities', 'businessTypes', 'industryTypes'));
+    }
+
+    public function branchPage()
+    {
+        $breadcrumbs = $this->generateBreadcrumb();
+        $branches = Branch::all();
+        $entities = Entity::all();
+        $branchTypes = BranchType::all();
+        return view('branch.page', compact('breadcrumbs', 'branches', 'entities', 'branchTypes'));
     }
 
     public function departmentPage()

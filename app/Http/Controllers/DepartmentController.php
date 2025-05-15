@@ -4,91 +4,83 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Exception;
 
 class DepartmentController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
-            'entity_id'   => 'required|exists:entities,id',
-            'code'        => 'required|unique:departments,code',
-            'name'        => 'required|string|max:255',
-            'email'       => 'nullable|email',
-            'phone'       => 'nullable|string|max:20',
-            'fax'         => 'nullable|string|max:20',
-            'address'     => 'nullable|string',
-            'description' => 'nullable|string',
-            'status'      => 'required|in:active,inactive',
-        ]);
-
         try {
-            Department::create([
-                'entity_id'   => $request->entity_id,
-                'code'        => $request->code,
-                'name'        => $request->name,
-                'email'       => $request->email,
-                'phone'       => $request->phone,
-                'fax'         => $request->fax,
-                'address'     => $request->address,
-                'description' => $request->description,
-                'status'      => $request->status,
+            $validated = $request->validate([
+                'entity_id'   => 'required|exists:entities,id',
+                'code'        => 'required|unique:departments,code',
+                'name'        => 'required|string|max:255',
+                'email'       => 'nullable|email',
+                'phone'       => 'nullable|string|max:20',
+                'fax'         => 'nullable|string|max:20',
+                'address'     => 'nullable|string',
+                'description' => 'nullable|string',
+                'status'      => 'required|in:active,inactive',
             ]);
 
-            return redirect()->back()->with('success', 'Department berhasil disimpan.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan department.');
+            Department::create($validated);
+
+            return redirect()->back()->with('success', 'Department has been created successfully.');
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Failed to create department: ' . $e->getMessage())
+                ->withInput();
         }
     }
 
     public function update(Request $request)
     {
-        $request->validate([
-            'id'          => 'required|exists:departments,id',
-            // 'entity_id'   => 'required|exists:entities,id',
-            // 'code'        => 'required',
-            // 'name'        => 'required|string|max:255',
-            // 'email'       => 'nullable|email',
-            // 'phone'       => 'nullable|string|max:20',
-            // 'fax'         => 'nullable|string|max:20',
-            // 'address'     => 'nullable|string',
-            // 'description' => 'nullable|string',
-            // 'status'      => 'required|in:active,inactive',
-        ]);
-
-        dd($request->all());
-
         try {
-            $department = Department::findOrFail($request->id);
-
-            if ($this->isDuplicateDepartmentCode($request->entity_id, $request->code, $request->id)) {
-                return redirect()->back()->with('error', 'Kode department sudah digunakan untuk entity yang sama.');
-            }
-
-            $department->update([
-                'entity_id'   => $request->entity_id,
-                'code'        => $request->code,
-                'name'        => $request->name,
-                'email'       => $request->email,
-                'phone'       => $request->phone,
-                'fax'         => $request->fax,
-                'address'     => $request->address,
-                'description' => $request->description,
-                'status'      => $request->status,
+            $validated = $request->validate([
+                'id'          => 'required|exists:departments,id',
+                'entity_id'   => 'required|exists:entities,id',
+                'code'        => 'required|string|max:50',
+                'name'        => 'required|string|max:255',
+                'email'       => 'nullable|email',
+                'phone'       => 'nullable|string|max:20',
+                'fax'         => 'nullable|string|max:20',
+                'address'     => 'nullable|string',
+                'description' => 'nullable|string',
+                'status'      => 'required|in:active,inactive',
             ]);
 
-            return redirect()->back()->with('success', 'Department berhasil diperbarui.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui department.');
+            $department = Department::findOrFail($validated['id']);
+
+            if ($this->isDuplicateDepartmentCode($validated['entity_id'], $validated['code'], $validated['id'])) {
+                return redirect()->back()
+                    ->with('error', 'The department code is already in use for the selected entity.')
+                    ->withInput();
+            }
+
+            $department->update($validated);
+
+            return redirect()->back()->with('success', 'Department has been updated successfully.');
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Failed to update department: ' . $e->getMessage())
+                ->withInput();
         }
     }
 
-    protected function isDuplicateDepartmentCode($entityId, $code, $excludeId = null)
+    protected function isDuplicateDepartmentCode($entityId, $code, $excludeId = null): bool
     {
         return Department::where('entity_id', $entityId)
             ->where('code', $code)
-            ->when($excludeId, function ($query, $excludeId) {
-                $query->where('id', '!=', $excludeId);
-            })
+            ->when($excludeId, fn($query) => $query->where('id', '!=', $excludeId))
             ->exists();
     }
 }
