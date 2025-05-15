@@ -22,6 +22,7 @@ class BranchController extends Controller
                 'fax' => 'nullable|string|max:255',
                 'postal_code' => 'nullable|string|max:255',
                 'address' => 'nullable|string|max:255',
+                'description' => 'nullable|string|max:255',
                 'status' => 'in:Active,Inactive',
             ]);
 
@@ -41,7 +42,6 @@ class BranchController extends Controller
 
     public function update(Request $request)
     {
-        dd($request->all());
         try {
             $validated = $request->validate([
                 'id' => 'required|exists:branches,id',
@@ -54,6 +54,7 @@ class BranchController extends Controller
                 'fax' => 'nullable|string|max:255',
                 'postal_code' => 'nullable|string|max:255',
                 'address' => 'nullable|string|max:255',
+                'description' => 'nullable|string|max:255',
                 'status' => 'in:Active,Inactive',
             ]);
 
